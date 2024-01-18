@@ -1,0 +1,47 @@
+
+import java.io.File;
+import java.util.Scanner;
+
+public final class Demo {
+
+    // gcd(a, b) = gcd(b , a% b) b == 0 then a
+    // gcd(12,20) is 4
+    private static int euclideanGcd(int a, int b) {
+
+        if (b == 0) {
+            return a;
+        }
+
+        return euclideanGcd(b, a % b);
+
+    }
+
+    public static void main(String[] args) throws Exception {
+
+        Scanner scanner = null;
+        try {
+
+            scanner = new Scanner(new File("input.txt"));
+
+            // scanner = new Scanner(System.in);
+            // int t = scanner.nextInt();
+            // while (t > 0) {
+
+            int n = scanner.nextInt();
+            int m = scanner.nextInt();
+
+            // int arr[] = new int[n];
+            // for (int i = 0; i < n; i++) {
+            // arr[i] = scanner.nextInt();
+            // }
+            int res = euclideanGcd(n, m);
+            System.out.println(res);
+            // t--;
+
+            // }
+
+        } finally {
+            scanner.close();
+        }
+    }
+}
