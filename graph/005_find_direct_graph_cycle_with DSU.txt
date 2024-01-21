@@ -1,0 +1,67 @@
+
+import java.io.File;
+import java.util.Arrays;
+import java.util.Scanner;
+
+public final class Codechef {
+
+    static int find(int e, int[] cache) {
+
+        if (cache[e] == -1)
+            return e;
+        return find(cache[e], cache);
+
+    }
+
+    static boolean union(int u, int v, int[] cache) {
+
+        int set1 = find(u, cache);
+        int set2 = find(v, cache);
+
+        if (set1 != set2) {
+            cache[set2] = set1;
+            return true;
+
+        }
+
+        return false;
+
+    }
+
+    public static void main(String[] args) throws Exception {
+
+        Scanner scanner = null;
+        try {
+
+            scanner = new Scanner(new File("input.txt"));
+
+            
+            int V = scanner.nextInt();
+            int E = scanner.nextInt();
+            int cache[] = new int[V + 1];
+            Arrays.fill(cache, -1);
+            boolean isFound = false;
+
+            for (int i = 0; i < E; i++) {
+
+                int u = scanner.nextInt();
+                int v = scanner.nextInt();
+
+                if (!union(u, v, cache)) {
+                    System.out.println("Found cycle");
+                    isFound = true;
+                    break;
+                }
+
+            }
+
+            if (!isFound)
+                System.out.println("No cycle found");
+
+          
+
+        } finally {
+            scanner.close();
+        }
+    }
+}
