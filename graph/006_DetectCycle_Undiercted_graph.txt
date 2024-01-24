@@ -1,0 +1,112 @@
+
+import java.io.File;
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
+import java.util.Scanner;
+
+/**
+ * Created by Mohamed Thaiseer
+ */
+/**
+ * Input
+ * 5 4
+ * 0 1
+ * 1 2
+ * 2 3
+ * 3 4
+ * Result : No Cycle
+ * 
+ * 5 4
+ * 0 1
+ * 1 2
+ * 2 3
+ * 3 4
+ * 4 0
+ * Result : Cycle found
+ * 
+ * 
+ * 
+ */
+public final class Demo {
+
+    static boolean detectCycle(Map<Integer, List<Integer>> graph,
+            boolean visited[], int parent, int node) {
+
+        visited[node] = true;
+
+        for (int child : graph.get(node)) {
+
+            if (visited[child] == false) {
+
+                visited[child] = true;
+                if (detectCycle(graph, visited, node, child)) {
+                    return true;
+                }
+
+            } else if (visited[child] && child != parent) {
+
+                return true;
+
+            }
+        }
+
+        return false;
+    }
+
+    static Map<Integer, List<Integer>> createAdjList(int n, int m, int[][] edges) {
+
+        Map<Integer, List<Integer>> graph = new HashMap<>();
+        for (int i = 0; i < n; i++) {
+            graph.put(i, new ArrayList<>());
+        }
+
+        for (int i = 0; i < m; i++) {
+            int[] list = edges[i];
+            int u = list[0];
+            int v = list[1];
+            graph.get(u).add(v);
+            graph.get(v).add(u);
+        }
+
+        return graph;
+    }
+
+    public static void main(String[] args) throws Exception {
+
+        Scanner scanner = null;
+        try {
+            scanner = new Scanner(new File("input.txt"));
+
+            // scanner = new Scanner(System.in);
+            // int t = scanner.nextInt();
+            // while (t > 0) {
+
+            int n = scanner.nextInt();
+            int m = scanner.nextInt();
+
+            int[][] adjList = new int[m][2];
+            for (int i = 0; i < m; i++) {
+                adjList[i][0] = scanner.nextInt();
+                adjList[i][1] = scanner.nextInt();
+
+            }
+
+            Map<Integer, List<Integer>> graph = createAdjList(n, m, adjList);
+            boolean visited[] = new boolean[n];
+            boolean res = detectCycle(graph, visited, -1, 0);
+            System.out.println(res);
+
+            // t--;
+
+            // }
+        } catch (Exception e) {
+
+            System.out.println("ERROR " + e);
+
+        } finally {
+            scanner.close();
+        }
+    }
+}
