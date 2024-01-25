@@ -1,0 +1,98 @@
+
+import java.io.File;
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.List;
+import java.util.Scanner;
+
+/**
+ * Created by Mohamed Thaiseer
+ */
+
+public final class Demo {
+
+    static List<Integer> findPrimes(int n) {
+
+        List<Integer> result = new ArrayList<>();
+        boolean[] primes = new boolean[n + 1];
+        Arrays.fill(primes, true);
+        primes[0] = false;
+        primes[1] = false;
+
+        for (int i = 2; i * i <= n; i++) {
+            if (primes[i]) {
+                for (int j = i * i; j <= n; j += i) {
+                    primes[j] = false;
+                }
+            }
+        }
+
+        for (int i = 0; i < primes.length; i++) {
+            if (primes[i]) {
+                result.add(i);
+            }
+        }
+
+        return result;
+
+    }
+
+    static void segSeive(int L, int R) {
+
+        // create array of R-L+1
+        boolean[] result = new boolean[R - L + 1];
+        Arrays.fill(result, true);
+        // find all primes with in sqrt(R
+        List<Integer> primes = findPrimes((int) Math.sqrt(R));
+
+        // for primes we can calculated
+        for (int prime : primes) {
+
+            // find staring point (51/2) * 2 add if L % primes != 0
+            int start = (L / prime) * prime;
+            if (L % prime != 0)
+                start += prime;
+            // from start mark all multiple of start false
+            for (int j = start; j <= R; j += prime) {
+                result[j - L] = false;
+            }
+
+        }
+
+        // iterate array and print all sives
+        for (int i = L; i <= R; i++) {
+            if (result[i - L]) {
+                System.out.println(i + " ");
+            }
+        }
+
+    }
+
+    public static void main(String[] args) throws Exception {
+
+        Scanner scanner = null;
+        try {
+            scanner = new Scanner(new File("input.txt"));
+
+            // scanner = new Scanner(System.in);
+
+            // int t = scanner.nextInt();
+            // while (t > 0) {
+
+            int L = scanner.nextInt();
+            int R = scanner.nextInt();
+
+            segSeive(L, R);
+
+            // t--;
+            // }
+
+        } catch (Exception e) {
+
+            System.out.println("ERROR " + e);
+
+        } finally {
+            scanner.close();
+        }
+    }
+}
